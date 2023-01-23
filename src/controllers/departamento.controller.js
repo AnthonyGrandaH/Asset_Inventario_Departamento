@@ -41,13 +41,13 @@ const updateDepartamento = async (req, res, next) => {
     try {
         const { id } = req.params
         const { nombre_departamento } = req.body
-        const result = await pool.query("UPDATE departamento SET nombre_departamento = $2 WHERE idDepartamento = $1", [id, nombre_departamento])
+        const result = await pool.query("UPDATE departamento SET nombre_departamento = $2 WHERE iddepartamento = $1 RETURNING *", [id, nombre_departamento])
 
         if (result.rows.length === 0) {
-            res.status(400).json({ message: 'No existen datos' })
+            res.status(404).json({ message: 'No existen datos' })
         }
-
-        res.json(result.rows)
+        res.status(200).json({ message: 'Actualizado' })
+        //res.json(result.rows)
     } catch (error) {
         next(error)
     }
@@ -57,7 +57,7 @@ const deleteDepartamento = async (req, res, next) => {
     try {
         const { id } = req.params
 
-        const result = await pool.query('delete from departamento where idDepartamento = $1', [id])
+        const result = await pool.query('delete from departamento where idDepartamento = $1 RETURNING *', [id])
 
         if (result.rows.length === 0) {
             res.status(400).json({ message: 'No existen datos' })

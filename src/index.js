@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const morgan = require('morgan')
 const routes = require('./routes/departamento.routes')
+const routes2 = require('./routes/inventario.routes')
 
 app.use(morgan('dev'))
 app.use(express.json());
@@ -10,7 +11,7 @@ app.use(cors());
 
 //Rutas
 
-app.use(routes)
+app.use(routes, routes2)
 app.use((err, req, res, next) => {
     return res.json({
         message: 'Error'
